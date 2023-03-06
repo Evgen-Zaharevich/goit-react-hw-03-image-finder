@@ -38,7 +38,7 @@ export class ImageGallery extends Component {
       const { hits, total } = await FetchImages(searchQuery, page);
       const resultVisionButton = pictures.length !== total;
 
-      if (hits.length === 0) {
+      if (hits.length === 0 && pictures.length === 0) {
         this.setState({ empty: true });
       }
 
