@@ -2,6 +2,7 @@ import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Component } from 'react';
 import { FetchImages } from 'components/api/FetchImages';
 import { SearchBar } from 'components/SearchBar/SearchBar';
+import { Loader } from 'components/Loader/Loader';
 
 export class ImageGallery extends Component {
   state = {
@@ -11,6 +12,8 @@ export class ImageGallery extends Component {
     error: null,
     showButton: false,
     empty: false,
+    showModal: false,
+    loading: false,
   };
 
   getSearchQueryValue = searchQuery => {
@@ -20,6 +23,8 @@ export class ImageGallery extends Component {
       page: 1,
       error: null,
       empty: false,
+      showModal: false,
+      loading: false,
     });
   };
 
@@ -33,21 +38,25 @@ export class ImageGallery extends Component {
 
   getPictures = async (searchQuery, page) => {
     const { pictures } = this.state;
-
+    this.setState({ loading: true });
     try {
       const { hits, total } = await FetchImages(searchQuery, page);
-      const resultVisionButton = pictures.length !== total;
 
+      // умова для рендеру меседжу при не вірному запиті в input
       if (hits.length === 0 && pictures.length === 0) {
         this.setState({ empty: true });
       }
 
+      // умова для не рендеру компоненту button load more коли картинки на бекенді закінчилися
+      const resultVisionButton = pictures.length !== total;
+
       this.setState(prevState => ({
         pictures: [...prevState.pictures, ...hits],
         showButton: resultVisionButton,
+        loading: false,
       }));
     } catch (error) {
-      this.setState({ error: error.message });
+      this.setState({ error: error.message, loading: false });
     }
   };
 
@@ -58,17 +67,19 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { pictures, error, showButton, empty, searchQuery } = this.state;
+    const { pictures, error, showButton, empty, searchQuery, loading } =
+      this.state;
 
     return (
       <>
         <SearchBar searchQuery={this.getSearchQueryValue} />
         <ul className="gallery">
-          {pictures.map(({ id, webformatURL, tags }) => (
+          {pictures.map(({ id, webformatURL, tags, largeImageURL }) => (
             <ImageGalleryItem
               key={id}
               id={id}
               webformatURL={webformatURL}
+              largeImageURL={largeImageURL}
               tags={tags}
             />
           ))}
@@ -84,6 +95,7 @@ export class ImageGallery extends Component {
           </p>
         )}
         {error && <p>Sorry. This {error}. </p>}
+        {loading && <Loader />}
       </>
     );
   }
