@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { FetchImages } from 'components/api/FetchImages';
 import { SearchBar } from 'components/SearchBar/SearchBar';
 import { Loader } from 'components/Loader/Loader';
-import { ImageGalleryList } from './ImageGallery.styled';
+import { ImageGalleryList, ButtonLoadMore } from './ImageGallery.styled';
 
 export class ImageGallery extends Component {
   state = {
@@ -86,9 +86,9 @@ export class ImageGallery extends Component {
           ))}
         </ImageGalleryList>
         {showButton && (
-          <button type="button" onClick={this.loadMore}>
+          <ButtonLoadMore type="button" onClick={this.loadMore}>
             Load more
-          </button>
+          </ButtonLoadMore>
         )}
         {empty && (
           <p>
