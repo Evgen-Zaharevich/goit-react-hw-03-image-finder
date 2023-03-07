@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { FetchImages } from 'components/api/FetchImages';
 import { SearchBar } from 'components/SearchBar/SearchBar';
 import { Loader } from 'components/Loader/Loader';
+import { ImageGalleryList } from './ImageGallery.styled';
 
 export class ImageGallery extends Component {
   state = {
@@ -73,7 +74,7 @@ export class ImageGallery extends Component {
     return (
       <>
         <SearchBar searchQuery={this.getSearchQueryValue} />
-        <ul className="gallery">
+        <ImageGalleryList>
           {pictures.map(({ id, webformatURL, tags, largeImageURL }) => (
             <ImageGalleryItem
               key={id}
@@ -83,7 +84,7 @@ export class ImageGallery extends Component {
               tags={tags}
             />
           ))}
-        </ul>
+        </ImageGalleryList>
         {showButton && (
           <button type="button" onClick={this.loadMore}>
             Load more

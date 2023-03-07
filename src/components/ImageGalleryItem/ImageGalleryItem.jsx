@@ -1,5 +1,9 @@
 import { Component } from 'react';
 import { Modal } from 'components/Modal/Modal';
+import {
+  ImageGalleryITEM,
+  ImageGalleryItemImage,
+} from './ImageGalleryItem.styled';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -26,8 +30,12 @@ export class ImageGalleryItem extends Component {
     const { showModal, largeURL } = this.state;
 
     return (
-      <li>
-        <img src={webformatURL} alt={tags} onClick={this.clickOnImage} />
+      <ImageGalleryITEM>
+        <ImageGalleryItemImage
+          src={webformatURL}
+          alt={tags}
+          onClick={this.clickOnImage}
+        />
         {showModal && (
           <Modal
             largeURL={largeURL}
@@ -35,7 +43,7 @@ export class ImageGalleryItem extends Component {
             toggleModal={this.toggleModal}
           />
         )}
-      </li>
+      </ImageGalleryITEM>
     );
   }
 }
