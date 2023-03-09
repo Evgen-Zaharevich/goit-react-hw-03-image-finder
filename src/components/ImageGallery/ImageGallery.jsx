@@ -41,7 +41,7 @@ export class ImageGallery extends Component {
     const { pictures } = this.state;
     this.setState({ loading: true });
     try {
-      const { hits, total } = await FetchImages(searchQuery, page);
+      const { hits } = await FetchImages(searchQuery, page);
 
       // умова для рендеру меседжу при не вірному запиті в input
       if (hits.length === 0 && pictures.length === 0) {
@@ -49,7 +49,7 @@ export class ImageGallery extends Component {
       }
 
       // умова для не рендеру компоненту button load more коли картинки на бекенді закінчилися
-      const resultVisionButton = pictures.length !== total;
+      const resultVisionButton = hits.length === 12;
 
       this.setState(prevState => ({
         pictures: [...prevState.pictures, ...hits],
